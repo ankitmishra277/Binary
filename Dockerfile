@@ -1,30 +1,26 @@
-# Use a base image with Java 17 (or your required version)
-FROM openjdk:17-jdk-slim as builder
+# Use the Maven image to build the application
+FROM maven:3.8.5-openjdk-17 AS build
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Maven or Gradle wrapper and the project files
-COPY pom.xml ./
-COPY src ./src
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# Download Maven dependencies (skip tests to speed up build)
-RUN ./mvnw dependency:go-offline -B
+# Package the application, skipping the tests
+RUN mvn clean package -DskipTests
 
-# Package the application
-RUN ./mvnw package -DskipTests
+# Use a slim version of OpenJDK 17 for the runtime environment
+FROM openjdk:17.0.1-jdk-slim
 
-# Use a smaller base image to run the application
-FROM openjdk:17-jre-slim
-
-# Set the working directory in the new image
+# Set the working directory for the runtime image
 WORKDIR /app
 
-# Copy the jar file from the builder image
-COPY --from=builder /app/target/your-app-name.jar ./app.jar
+# Copy the packaged jar from the build stage
+COPY --from=build /app/target/JWT-0.0.1-SNAPSHOT.jar /app/jwt.jar
 
-# Expose the port the app runs on
+# Expose the port the application will run on
 EXPOSE 8080
 
-# Run the jar file
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "jwt.jar"]
