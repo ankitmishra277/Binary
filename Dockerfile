@@ -17,10 +17,10 @@ FROM openjdk:17.0.1-jdk-slim
 WORKDIR /app
 
 # Copy the packaged jar from the build stage
-COPY --from=build /app/target/JWT-0.0.1-SNAPSHOT.jar /app/jwt.jar
+COPY --from=build /app/target/BinaryData-0.0.1-SNAPSHOT.jar /app/binary.jar
 
 # Expose the port the application will run on
 EXPOSE 8080
 
 # Run the application
-ENTRYPOINT ["java", "-jar", "jwt.jar"]
+ENTRYPOINT ["java", "-jar", "binary.jar"]
