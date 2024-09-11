@@ -32,7 +32,7 @@ public class Controller {
             headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=compressed.bin");
 
-            Object responseBody = "Data received successfully";
+            Object responseBody = "Data received successfully" + compressedData;
             // Return the response entity with headers and binary data
             return new ResponseEntity<>(responseBody,headers,HttpStatus.OK);
 
