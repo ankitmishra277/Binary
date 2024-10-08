@@ -2,6 +2,7 @@ package com.ff.BinaryData.controller;
 
 import com.ff.BinaryData.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
