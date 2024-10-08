@@ -25,18 +25,18 @@ public class Controller {
     @PostMapping("/process")
     public ResponseEntity<Object> processBinaryData(@RequestBody byte[] inputData) {
         try {
+
             // Compress the binary data using the service
-            // byte[] compressedData = service.compressData(inputData);
+//            byte[] compressedData = service.compressData(inputData);
             ByteArrayResource byteArrayResource = new ByteArrayResource(inputData);
-            String value = new String(byteArrayResource.getByteArray());
+            String value = new String(byteArrayResource.getContentAsByteArray());
             // Create headers for the response
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=compressed.bin");
-
-            Object responseBody = "Data received successfully =>" + value;
+            
             // Return the response entity with headers and binary data
-            return new ResponseEntity<>(responseBody,headers,HttpStatus.OK);
+            return new ResponseEntity<>(value,headers,HttpStatus.OK);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
